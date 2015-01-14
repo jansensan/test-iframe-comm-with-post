@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>iframe container</title>
+    <link rel="stylesheet" href="static/css/iframe-container.css">
+  </head>
+
+  <body>
+    <div ng-app="icontainer.app.ContainerApp">
+      <h1>iframe container</h1>
+      <p>This page runs on a script built with AngularJS v.1.2.26</p>
+      <counterdisplay></counterdisplay>
+      <br/>
+      <iframe
+        src="http://content.iframe-test.com:1600"
+        width="480"
+        height="320"
+        >
+      </iframe>
+      <proxytester></proxytester>
+    </div>
+    
+    <!-- bower:js -->
+    <script src="static/js/vendors/jquery/dist/jquery.js"></script>
+    <script src="static/js/vendors/angular/angular.js"></script>
+    <!-- endbower -->
+    <script src="static/js/iframe-container.js" ></script>
+  </body>
+</html>

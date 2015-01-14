@@ -1,0 +1,52 @@
+//===========/----------------------------------------------
+//  [_IMP]  /  Imports
+//=========/------------------------------------------------
+
+@import "common/elements.less";
+@import "common/variables.less";
+
+
+//===========/----------------------------------------------
+//  [_CSS]  /  CSS
+//=========/------------------------------------------------
+
+html,
+body
+{
+  background-color: @white;
+  font-family: @ffPrimary;
+  color: @black;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.5pt;
+  color: #800000;
+}
+
+
+.horizontally-centered
+{
+  width: 272px;
+  margin: 0 auto;
+  position: relative;
+
+  @media (min-width: @screen-tablet)
+  {
+    width: 480px;
+  }
+
+  @media (min-width: @screen-tablet)
+  {
+    width: 640px;
+  }
+}

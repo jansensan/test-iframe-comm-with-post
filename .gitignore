@@ -1,0 +1,16 @@
+# Ignore files from git 
+
+# mac osx files
+._*
+.DS_STORE
+
+# mockups and resources
+.psd
+.ai
+.indd
+
+# project-specific files
+iframe-container/bower_components
+iframe-container/node_modules
+iframe-content/bower_components
+iframe-content/node_modules

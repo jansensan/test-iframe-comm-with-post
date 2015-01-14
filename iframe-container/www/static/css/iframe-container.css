@@ -1,0 +1,39 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+html,
+body {
+  background-color: #ffffff;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #101010;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.5pt;
+  color: #800000;
+}
+.horizontally-centered {
+  width: 272px;
+  margin: 0 auto;
+  position: relative;
+}
+@media (min-width: 519px) {
+  .horizontally-centered {
+    width: 480px;
+  }
+}
+@media (min-width: 519px) {
+  .horizontally-centered {
+    width: 640px;
+  }
+}
