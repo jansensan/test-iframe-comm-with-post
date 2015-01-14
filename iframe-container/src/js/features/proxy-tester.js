@@ -25,7 +25,7 @@
   function ProxyTesterController(iframeWindowProxy) {
     // public api
     var vm = this;
-    vm.testProxy = iframeWindowProxy.test;
+    vm.testProxy = iframeWindowProxy.helloIframe;
   }
   
 })();

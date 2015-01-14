@@ -24,9 +24,9 @@ gulp.task('minify-js', function() {
       'src/js/features/counter-display.js',
       'src/js/container-app.js'
     ])
-    .pipe(concat('iframe-container.js'))
+    .pipe(concat('icontainer.js'))
     .pipe(gulp.dest('www/static/js'))
-    .pipe(rename('iframe-container.min.js'))
+    .pipe(rename('icontainer.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('www/static/js'));
 });

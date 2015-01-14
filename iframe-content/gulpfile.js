@@ -25,9 +25,9 @@ gulp.task('minify-js', function() {
       'src/js/features/iframe-content.js',
       'src/js/iframe-app.js'
     ])
-    .pipe(concat('iframe-content.js'))
+    .pipe(concat('icontent.js'))
     .pipe(gulp.dest('www/static/js'))
-    .pipe(rename('iframe-content.min.js'))
+    .pipe(rename('icontent.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('www/static/js'));
 });

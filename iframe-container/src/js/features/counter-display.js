@@ -21,8 +21,6 @@
 
 
   function CounterDisplayController() {
-    console.log('--- icontainer.features.CounterDisplayController ---');
-
     // vars
     var _count = 0;
 
@@ -31,12 +29,6 @@
     vm.getCount = getCount;
     vm.increase = increase;
     vm.decrease = decrease;
-
-    console.log('vm: ', (vm));
-    console.log('vm.getCount: ' + (vm.getCount));
-    console.log('vm.increase: ' + (vm.increase));
-    console.log('vm.decrease: ' + (vm.decrease));
-    console.log('vm.getCount(): ' + (vm.getCount()));
 
     // private methods
     function getCount() {

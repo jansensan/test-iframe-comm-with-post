@@ -25,7 +25,7 @@
   function ProxyTesterController(parentWindowProxy) {
     // public api
     var vm = this;
-    vm.testProxy = parentWindowProxy.test;
+    vm.testProxy = parentWindowProxy.helloParent;
   }
   
 })();
