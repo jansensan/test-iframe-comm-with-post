@@ -10,13 +10,18 @@
 
   function PostOfficeConfigProvider() {
     // variables
-    var _recipientWindow = null,
+    var _currentWindow = null,
+        _recipientWindow = null,
         _recipientDomain = '',
         _name = '';
 
     // private methods
     function setName(value) {
       _name = value;
+    }
+
+    function setCurrentWindow(value) {
+      _currentWindow = value;
     }
 
     function setRecipientWindow(value) {
@@ -30,7 +35,8 @@
     function getProvider() {
       return {
         name: _name,
-        window: _recipientWindow,
+        currentWindow: _currentWindow,
+        recipientWindow: _recipientWindow,
         domain: _recipientDomain
       };
     }
@@ -38,6 +44,7 @@
     // public api
     return {
       setName: setName,
+      setCurrentWindow: setCurrentWindow,
       setRecipientWindow: setRecipientWindow,
       setRecipientDomain: setRecipientDomain,
       $get: getProvider
@@ -48,14 +55,19 @@
   /* ngInject */
   function PostOffice($q, postOfficeConfig) {
     // vars
-    var _window = postOfficeConfig.window,
+    var _currentWindow = postOfficeConfig.currentWindow,
+        _recipientWindow = postOfficeConfig.recipientWindow,
         _domain = postOfficeConfig.domain,
         _name = postOfficeConfig.name,
         _deferred = $q.defer(),
         _hasPromiseResolved = false;
 
-    if(!_window) {
-      throw new Error(getMissingParamErrorMessage('window'));
+    if(!_currentWindow) {
+      throw new Error(getMissingParamErrorMessage('currentWindow'));
+    }
+
+    if(!_recipientWindow) {
+      throw new Error(getMissingParamErrorMessage('recipientWindow'));
     }
 
     if(!_domain) {
@@ -84,25 +96,25 @@
 
     function enable() {
       // add event listeners
-      _window.addEventListener("message", onMessageReceived);
+      _currentWindow.addEventListener("message", onMessageReceived);
     }
 
     function disable() {
       // remove event listeners
-      _window.removeEventListener("message", onMessageReceived);
+      _currentWindow.removeEventListener("message", onMessageReceived);
     }
 
     function send(message) {
       console.log('--- PostOffice:send ---');
       console.log('message: ', message);
       console.log('_domain: ', _domain);
-      console.log('_window: ', _window);
+      console.log('_recipientWindow: ', _recipientWindow);
 
-      if(_window) {
-        _window.postMessage(message, _domain);
+      if(_recipientWindow) {
+        _recipientWindow.postMessage(message, _domain);
 
       } else {
-        throw new Error('Error at PostOffice:send. The variable "window" is potentially undefined.');
+        throw new Error('Error at PostOffice:send. The recipient window is potentially undefined.');
       }
     }
 
