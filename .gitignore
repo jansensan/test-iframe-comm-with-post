@@ -12,6 +12,7 @@
 # project-specific files
 post-office/bower_components
 post-office/node_modules
+post-office/dist
 iframe-container/bower_components
 iframe-container/node_modules
 iframe-content/bower_components
