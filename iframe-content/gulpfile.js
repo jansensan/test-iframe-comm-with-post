@@ -21,6 +21,7 @@ gulp.task('minify-js', function() {
   return gulp.src([
       'src/js/services/post-office-service.js',
       'src/js/features/post-office-tester.js',
+      'src/js/features/state-toggle.js',
       'src/js/features/iframe-content.js',
       'src/js/iframe-app.js'
     ])

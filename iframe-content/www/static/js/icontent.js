@@ -69,27 +69,24 @@
 })();
 (function () {
   
+  'use strict';
+
   angular
-    .module('icontent.features.IFrameContent', [
-      'icontent.features.PostOfficeTester'
-    ])
-    .controller('IFrameContentController', IFrameContentController)
-    .directive('iframecontent', IFrameContent);
+    .module('icontent.features.StateToggle', [])
+    .controller('StateToggleController', StateToggleController)
+    .directive('statetoggle', StateToggle)
 
-
-  function IFrameContent() {
+  function StateToggle() {
     return {
       restrict: 'E',
-      controller: 'IFrameContentController',
+      controller: 'StateToggleController',
       controllerAs: 'vm',
       bindToController: true,
-      templateUrl: 'static/templates/iframe-content-template.html'
+      templateUrl: 'static/templates/state-toggle-template.html'
     };
   }
 
-
-  /* ngInject */
-  function IFrameContentController() {
+  function StateToggleController() {
     // vars
     var _states = {
       ON: 'on',
@@ -125,6 +122,33 @@
     function isOff() {
       return _state === _states.OFF;
     }
+  }
+
+})();
+(function () {
+  
+  angular
+    .module('icontent.features.IFrameContent', [
+      'icontent.features.StateToggle',
+      'icontent.features.PostOfficeTester'
+    ])
+    .controller('IFrameContentController', IFrameContentController)
+    .directive('iframecontent', IFrameContent);
+
+
+  function IFrameContent() {
+    return {
+      restrict: 'E',
+      controller: 'IFrameContentController',
+      controllerAs: 'vm',
+      bindToController: true,
+      templateUrl: 'static/templates/iframe-content-template.html'
+    };
+  }
+
+
+  function IFrameContentController() {
+    var vm = this;
   }
   
 })();
