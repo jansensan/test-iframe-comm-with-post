@@ -1,72 +1,35 @@
 (function () {
   
   'use strict';
-
-
+  
   angular
-    .module('icontent.proxies.ParentWindowProxy', [])
-    .constant('PARENT_DOMAIN', 'http://container.iframe-test.com:3200')
-    .factory('parentWindowProxy', ParentWindowProxy);
+    .module('icontent.services.PostOfficeService', [
+      'PostOffice'
+    ])
+    .config(PostOfficeConfig)
+    .factory('postOfficeService', PostOfficeService);
 
 
   /* ngInject */
-  function ParentWindowProxy(
-    $window,
-    PARENT_DOMAIN
-  ) {
+  function PostOfficeConfig($windowProvider, postOfficeConfigProvider) {
+    postOfficeConfigProvider.setName('icontentPostOffice');
+    postOfficeConfigProvider.setRecipientDomain('http://container.iframe-test.com:3200');
+    postOfficeConfigProvider.setRecipientWindow($windowProvider.$get().parent);
+  }
 
+  /* ngInject */
+  function PostOfficeService(postOffice) {
     // public api
-    var parentWindow = $window.parent;
-    var _proxy = {};
-    _proxy.helloParent = helloParent;
+    var _service = {};
+    _service.test = test;
 
     // private methods
-    function init() {
-      console.log('--- icontent.proxies.ParentWindowProxy:init ---');
-      
-      addEventListeners();
+    function test() {
+      postOffice.send('hello post office');
     }
 
-    function addEventListeners() {
-      $window.addEventListener("message", onMessageReceived);
-    }
-
-    function removeEventListeners() {
-      $window.removeEventListener("message", onMessageReceived);
-    }
-
-    function postToParentWindow(data) {
-      if(parentWindow) {
-        parentWindow.postMessage(data, PARENT_DOMAIN);
-
-      } else {
-        console.error('Error at icontent.proxies.ParentWindowProxy:postToParentWindow. The variable "parentWindow" is potentially undefined.');
-      }
-    }
-
-    function helloParent() {
-      console.log('--- icontent.proxies.ParentWindowProxy:helloParent ---');
-      postToParentWindow('hello parent');
-    }
-
-    // event handlers
-    function onMessageReceived(event) {
-      console.log('--- icontent.proxies.ParentWindowProxy:onMessageReceived ---');
-
-      // ignore messages not sent from the parent's domain
-      if(event.origin !== PARENT_DOMAIN) {
-        return;
-      }
-
-      console.log('event.data: ', event.data);
-    }
-
-    // init
-    init();
-
-    return _proxy;
+    return _service;
   }
-  
   
 })();
 (function () {
@@ -74,29 +37,29 @@
   'use strict';
   
   angular
-    .module('icontent.features.ProxyTester', [
-      'icontent.proxies.ParentWindowProxy'
+    .module('icontent.features.PostOfficeTester', [
+      'icontent.services.PostOfficeService'
     ])
-    .controller('ProxyTesterController', ProxyTesterController)
-    .directive('proxytester', ProxyTester);
+    .controller('PostOfficeTesterController', PostOfficeTesterController)
+    .directive('postofficetester', PostOfficeTester);
 
 
-  function ProxyTester() {
+  function PostOfficeTester() {
     return {
       restrict: 'E',
-      controller: 'ProxyTesterController',
+      controller: 'PostOfficeTesterController',
       controllerAs: 'vm',
       bindToController: true,
-      templateUrl: 'static/templates/proxy-tester-template.html'
+      templateUrl: 'static/templates/post-office-tester-template.html'
     };
   }
 
 
   /* ngInject */
-  function ProxyTesterController(parentWindowProxy) {
+  function PostOfficeTesterController(postOfficeService) {
     // public api
     var vm = this;
-    vm.testProxy = parentWindowProxy.helloParent;
+    vm.test = postOfficeService.test;
   }
   
 })();
@@ -104,7 +67,7 @@
   
   angular
     .module('icontent.features.IFrameContent', [
-      'icontent.features.ProxyTester'
+      'icontent.features.PostOfficeTester'
     ])
     .controller('IFrameContentController', IFrameContentController)
     .directive('iframecontent', IFrameContent);

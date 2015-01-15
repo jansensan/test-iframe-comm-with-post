@@ -20,8 +20,8 @@ var rootPath = process.env.PWD = process.cwd();
 // Concatenate & Minify JS
 gulp.task('minify-js', function() {
   return gulp.src([
-      'src/js/proxies/parent-window-proxy.js',
-      'src/js/features/proxy-tester.js',
+      'src/js/services/post-office-service.js',
+      'src/js/features/post-office-tester.js',
       'src/js/features/iframe-content.js',
       'src/js/iframe-app.js'
     ])
@@ -30,6 +30,12 @@ gulp.task('minify-js', function() {
     .pipe(rename('icontent.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('www/static/js'));
+});
+
+// copy post office files
+gulp.task('copy-post-office', function () {
+  return gulp.src(['../common/dist/*.js'])
+    .pipe(gulp.dest('www/static/js/postoffice'));
 });
 
 // copy vendors files
@@ -84,6 +90,7 @@ gulp.task('build', [
   'compile-less',
   'minify-js',
   'copy-vendors',
+  'copy-post-office',
   'build-index'
 ]);
 gulp.task('dev', ['serve']);

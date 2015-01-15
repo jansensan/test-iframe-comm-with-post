@@ -2,7 +2,7 @@
   
   angular
     .module('icontent.features.IFrameContent', [
-      'icontent.features.ProxyTester'
+      'icontent.features.PostOfficeTester'
     ])
     .controller('IFrameContentController', IFrameContentController)
     .directive('iframecontent', IFrameContent);

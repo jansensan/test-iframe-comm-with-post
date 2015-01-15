@@ -49,6 +49,7 @@
       postToParentWindow('hello parent');
     }
 
+
     // event handlers
     function onMessageReceived(event) {
       console.log('--- icontent.proxies.ParentWindowProxy:onMessageReceived ---');
