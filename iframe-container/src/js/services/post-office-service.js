@@ -3,7 +3,7 @@
   'use strict';
   
   angular
-    .module('icontent.services.PostOfficeService', [
+    .module('icontainer.services.PostOfficeService', [
       'PostOffice'
     ])
     .config(PostOfficeConfig)
@@ -15,10 +15,10 @@
     var win = $windowProvider.$get(),
         p = postOfficeConfigProvider;
 
-    p.setName('icontentPostOffice');
+    p.setName('icontainerPostOffice');
     p.setCurrentWindow(win);
-    p.setRecipientWindow(win.parent);
-    p.setRecipientDomain('http://container.iframe-test.com:3200');
+    p.setRecipientWindow(win.frames['iframeContent'].contentWindow);
+    p.setRecipientDomain('http://content.iframe-test.com:1600');
   }
 
   /* ngInject */
@@ -29,7 +29,7 @@
 
     // private methods
     function test() {
-      postOffice.send('hello post office');
+      postOffice.send('hello child');
     }
 
     return _service;

@@ -7,7 +7,6 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
-var jshint = require('gulp-jshint');
 var webserver = require('gulp-webserver');
 var bowerFiles = require('main-bower-files');
 var wiredep = require('wiredep').stream;
@@ -34,7 +33,7 @@ gulp.task('minify-js', function() {
 
 // copy post office files
 gulp.task('copy-post-office', function () {
-  return gulp.src(['../common/dist/*.js'])
+  return gulp.src(['../post-office/dist/*.js'])
     .pipe(gulp.dest('www/static/js/postoffice'));
 });
 
@@ -65,13 +64,6 @@ gulp.task('compile-less', function () {
   return gulp.src('src/styles/less/iframe-content.less')
     .pipe(less())
     .pipe(gulp.dest('www/static/css'));
-});
-
-// Lint
-gulp.task('lint', function() {
-  return gulp.src('src/*.js')
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
 });
 
 // Serve
