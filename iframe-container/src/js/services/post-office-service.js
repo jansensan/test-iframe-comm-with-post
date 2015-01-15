@@ -6,29 +6,27 @@
     .module('icontainer.services.PostOfficeService', [
       'PostOffice'
     ])
-    .config(PostOfficeConfig)
     .factory('postOfficeService', PostOfficeService);
 
 
   /* ngInject */
-  function PostOfficeConfig($windowProvider, postOfficeProvider) {
-    var win = $windowProvider.$get(),
-        p = postOfficeProvider;
+  function PostOfficeService($window, postOffice) {
+    // init post office
+    var postOfficeConfig = {
+      name: 'icontainerPostOffice',
+      currentWindow: $window,
+      recipientWindow: $window.frames['iframeContent'].contentWindow,
+      recipientDomain: 'http://content.iframe-test.com:1600'
+    };
+    postOffice.init(postOfficeConfig);
 
-    p.name = 'icontainerPostOffice';
-    p.currentWindow = win;
-    p.recipientWindow = win.frames['iframeContent'].contentWindow;
-    p.recipientDomain = 'http://content.iframe-test.com:1600';
-  }
-
-  /* ngInject */
-  function PostOfficeService(postOffice) {
     // public api
     var _service = {};
     _service.test = test;
 
     // private methods
     function test() {
+      console.log('--- icontainer.services.PostOfficeService:test ---');
       postOffice.send('hello child');
     }
 

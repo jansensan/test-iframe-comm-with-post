@@ -22,7 +22,7 @@
 
 
   /* ngInject */
-  function PostOfficeTesterController(postOfficeService) {
+  function PostOfficeTesterController($window, postOfficeService) {
     // public api
     var vm = this;
     vm.test = postOfficeService.test;

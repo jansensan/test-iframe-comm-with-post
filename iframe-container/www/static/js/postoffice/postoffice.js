@@ -4,7 +4,7 @@
   
   angular
     .module('PostOffice', [])
-    .provider('postOffice', PostOfficeProvider);
+    .factory('postOffice', PostOffice);
 
 
   function PostOfficeProvider() {
@@ -50,37 +50,54 @@
   /* ngInject */
   function PostOffice($q) {
     // vars
-    var _name = this.name,
-        _currentWindow = this.currentWindow,
-        _recipientWindow = this.recipientWindow,
-        _recipientDomain = this.recipientDomain,
+    var _name = '',
+        _currentWindow = null,
+        _recipientWindow = null,
+        _recipientDomain = '',
         _deferred = $q.defer(),
         _hasPromiseResolved = false;
 
-    if(!_currentWindow) {
-      throw new Error(getMissingParamErrorMessage('currentWindow'));
-    }
-
-    if(!_recipientWindow) {
-      throw new Error(getMissingParamErrorMessage('recipientWindow'));
-    }
-
-    if(!_recipientDomain) {
-      throw new Error(getMissingParamErrorMessage('domain'));
-    }
-
-
     // public api
     var _service = {};
-    _service.enable = enable;
+    _service.init = init;
     _service.disable = disable;
+    _service.enable = enable;
     _service.getName = getName;
     _service.getPromise = getPromise;
     _service.send = send;
 
 
     // private methods
-    function init() {
+    function init(config) {
+      console.log('--- PostOffice:init ---');
+
+      // exit quickly if no config is provided
+      if(!config) {
+        throw new Error('No config object was provided to initialize the PostOffice.');
+        return;
+
+      // set vars
+      } else {
+        if(config.name) {
+          _name = config.name;
+        }
+        if(config.currentWindow) {
+          _currentWindow = config.currentWindow;
+        }
+        if(config.recipientWindow) {
+          _recipientWindow = config.recipientWindow;
+        }
+        if(config.recipientDomain) {
+          _recipientDomain = config.recipientDomain;
+        }
+      }
+
+      console.log('_name: ' + (_name));
+      console.log('_currentWindow: ', _currentWindow);
+      console.log('_recipientWindow: ', _recipientWindow);
+      console.log('_recipientDomain: ' + (_recipientDomain));
+
+      // enable
       enable();
     }
 
@@ -90,6 +107,19 @@
     }
 
     function enable() {
+      // check for missing things
+      if(!_currentWindow) {
+        throw new Error(getMissingParamErrorMessage('currentWindow'));
+      }
+
+      if(!_recipientWindow) {
+        throw new Error(getMissingParamErrorMessage('recipientWindow'));
+      }
+
+      if(!_recipientDomain) {
+        throw new Error(getMissingParamErrorMessage('domain'));
+      }
+
       // add event listeners
       _currentWindow.addEventListener("message", onMessageReceived);
     }
@@ -141,10 +171,6 @@
 
       _deferred.resolve();
     }
-
-
-    // init
-    init();
 
 
     return _service;
