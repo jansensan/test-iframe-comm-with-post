@@ -15,7 +15,7 @@
     var postOfficeConfig = {
       name: 'icontainerPostOffice',
       currentWindow: $window,
-      recipientWindow: $window.frames['iframeContent'].contentWindow,
+      recipientWindow: document.getElementById('iframeContent').contentWindow,
       recipientDomain: 'http://content.iframe-test.com:1600'
     };
     postOffice.init(postOfficeConfig);
