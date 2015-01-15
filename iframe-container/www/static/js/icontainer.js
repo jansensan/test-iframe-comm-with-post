@@ -11,14 +11,14 @@
 
 
   /* ngInject */
-  function PostOfficeConfig($windowProvider, postOfficeConfigProvider) {
+  function PostOfficeConfig($windowProvider, postOfficeProvider) {
     var win = $windowProvider.$get(),
-        p = postOfficeConfigProvider;
+        p = postOfficeProvider;
 
-    p.setName('icontainerPostOffice');
-    p.setCurrentWindow(win);
-    p.setRecipientWindow(win.frames['iframeContent'].contentWindow);
-    p.setRecipientDomain('http://content.iframe-test.com:1600');
+    p.name = 'icontainerPostOffice';
+    p.currentWindow = win;
+    p.recipientWindow = win.frames['iframeContent'].contentWindow;
+    p.recipientDomain = 'http://content.iframe-test.com:1600';
   }
 
   /* ngInject */

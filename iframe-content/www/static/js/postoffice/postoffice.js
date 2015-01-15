@@ -4,61 +4,56 @@
   
   angular
     .module('PostOffice', [])
-    .provider('postOfficeConfig', PostOfficeConfigProvider)
-    .factory('postOffice', PostOffice);
+    .provider('postOffice', PostOfficeProvider);
 
 
-  function PostOfficeConfigProvider() {
+  function PostOfficeProvider() {
     // variables
     var _currentWindow = null,
         _recipientWindow = null,
         _recipientDomain = '',
         _name = '';
 
-    // private methods
-    function setName(value) {
-      _name = value;
-    }
-
-    function setCurrentWindow(value) {
-      _currentWindow = value;
-    }
-
-    function setRecipientWindow(value) {
-      _recipientWindow = value;
-    }
-
-    function setRecipientDomain(value) {
-      _recipientDomain = value;
-    }
-
-    function getProvider() {
-      return {
-        name: _name,
-        currentWindow: _currentWindow,
-        recipientWindow: _recipientWindow,
-        domain: _recipientDomain
-      };
-    }
-
     // public api
-    return {
-      setName: setName,
-      setCurrentWindow: setCurrentWindow,
-      setRecipientWindow: setRecipientWindow,
-      setRecipientDomain: setRecipientDomain,
-      $get: getProvider
+    var factory = {};
+    factory.$get = PostOffice;
+
+    // getters/setters
+    factory.name = function(value) {
+      if (!arguments.length) return _name;
+      _name = value;
+      return factory;
     };
+    
+    factory.currentWindow = function(value) {
+      if (!arguments.length) return _currentWindow;
+      _currentWindow = value;
+      return factory;
+    };
+    
+    factory.recipientWindow = function(value) {
+      if (!arguments.length) return _recipientWindow;
+      _recipientWindow = value;
+      return factory;
+    };
+    
+    factory.recipientDomain = function(value) {
+      if (!arguments.length) return _recipientDomain;
+      _recipientDomain = value;
+      return factory;
+    };
+
+    return factory;
   }
 
 
   /* ngInject */
-  function PostOffice($q, postOfficeConfig) {
+  function PostOffice($q) {
     // vars
-    var _currentWindow = postOfficeConfig.currentWindow,
-        _recipientWindow = postOfficeConfig.recipientWindow,
-        _domain = postOfficeConfig.domain,
-        _name = postOfficeConfig.name,
+    var _name = this.name,
+        _currentWindow = this.currentWindow,
+        _recipientWindow = this.recipientWindow,
+        _recipientDomain = this.recipientDomain,
         _deferred = $q.defer(),
         _hasPromiseResolved = false;
 
@@ -70,7 +65,7 @@
       throw new Error(getMissingParamErrorMessage('recipientWindow'));
     }
 
-    if(!_domain) {
+    if(!_recipientDomain) {
       throw new Error(getMissingParamErrorMessage('domain'));
     }
 
@@ -107,11 +102,11 @@
     function send(message) {
       console.log('--- PostOffice:send ---');
       console.log('message: ', message);
-      console.log('_domain: ', _domain);
+      console.log('_recipientDomain: ', _recipientDomain);
       console.log('_recipientWindow: ', _recipientWindow);
 
       if(_recipientWindow) {
-        _recipientWindow.postMessage(message, _domain);
+        _recipientWindow.postMessage(message, _recipientDomain);
 
       } else {
         throw new Error('Error at PostOffice:send. The recipient window is potentially undefined.');
@@ -140,7 +135,7 @@
     // event handlers
     function onMessageReceived(event) {
       // ignore messages not sent from expected domain
-      if(event.origin !== _domain) {
+      if(event.origin !== _recipientDomain) {
         return;
       }
 
