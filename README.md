@@ -89,7 +89,7 @@ This will open a browser page with the project.
 
 ### The recipient `window` of both the container and the content are empty
 
-Each of these project need to target a `window` object to be able to call `window.postMessage`.
+Each of these projects need to target a `window` object to be able to call `window.postMessage`.
 
 In the case of the container, running this code
 
