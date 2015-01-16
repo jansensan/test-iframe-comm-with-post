@@ -11,14 +11,17 @@
 
   /* ngInject */
   function PostOfficeService($window, postOffice) {
+    console.log('--- icontainer.services.PostOfficeService ---');
+
     // init post office
-    var postOfficeConfig = {
+    var childWindow = document.getElementById('iframeContent').contentWindow
+    console.log('childWindow: ', childWindow);
+    postOffice.init({
       name: 'icontainerPostOffice',
       currentWindow: $window,
-      recipientWindow: document.getElementById('iframeContent').contentWindow,
+      recipientWindow: childWindow,
       recipientDomain: 'http://content.iframe-test.com:1600'
-    };
-    postOffice.init(postOfficeConfig);
+    });
 
     // public api
     var _service = {};

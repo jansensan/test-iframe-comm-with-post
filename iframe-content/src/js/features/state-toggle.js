@@ -11,7 +11,7 @@
     return {
       restrict: 'E',
       controller: 'StateToggleController',
-      controllerAs: 'vm',
+      controllerAs: 'stateToggleVM',
       bindToController: true,
       templateUrl: 'static/templates/state-toggle-template.html'
     };
@@ -26,12 +26,12 @@
     var _state = _states.ON;
 
     // public api
-    var vm = this;
-    vm.turnOn = turnOn;
-    vm.turnOff = turnOff;
-    vm.getCurrentState = getCurrentState;
-    vm.isOn = isOn;
-    vm.isOff = isOff;
+    var stateToggleVM = this;
+    stateToggleVM.turnOn = turnOn;
+    stateToggleVM.turnOff = turnOff;
+    stateToggleVM.getCurrentState = getCurrentState;
+    stateToggleVM.isOn = isOn;
+    stateToggleVM.isOff = isOff;
 
     // private methods
     function turnOn() {

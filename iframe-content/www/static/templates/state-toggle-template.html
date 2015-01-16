@@ -1,7 +1,7 @@
 <div>
   <div class="directive-block">
-    <p>State is: <span class="content-value" ng-class="{'on': vm.isOn(), 'off': vm.isOff()}">{{vm.getCurrentState()}}</span></p>
-    <button ng-click="vm.turnOn()">Turn On</button>
-    <button ng-click="vm.turnOff()">Turn Off</button>
+    <p>State is: <span class="content-value" ng-class="{'on': stateToggleVM.isOn(), 'off': stateToggleVM.isOff()}">{{stateToggleVM.getCurrentState()}}</span></p>
+    <button ng-click="stateToggleVM.turnOn()">Turn On</button>
+    <button ng-click="stateToggleVM.turnOff()">Turn Off</button>
   </div>
 </div>

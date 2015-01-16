@@ -13,7 +13,7 @@
     return {
       restrict: 'E',
       controller: 'CounterDisplayController',
-      controllerAs: 'vm',
+      controllerAs: 'counterDisplayVM',
       bindToController: true,
       templateUrl: 'static/templates/counter-display-template.html'
     };
@@ -25,10 +25,10 @@
     var _count = 0;
 
     // public api
-    var vm = this;
-    vm.getCount = getCount;
-    vm.increase = increase;
-    vm.decrease = decrease;
+    var counterDisplayVM = this;
+    counterDisplayVM.getCount = getCount;
+    counterDisplayVM.increase = increase;
+    counterDisplayVM.decrease = decrease;
 
     // private methods
     function getCount() {

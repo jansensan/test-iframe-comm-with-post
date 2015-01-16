@@ -13,7 +13,7 @@
     return {
       restrict: 'E',
       controller: 'IFrameContentController',
-      controllerAs: 'vm',
+      controllerAs: 'iframeContentVM',
       bindToController: true,
       templateUrl: 'static/templates/iframe-content-template.html'
     };
@@ -21,7 +21,7 @@
 
 
   function IFrameContentController() {
-    var vm = this;
+    var iframeContentVM = this;
   }
   
 })();

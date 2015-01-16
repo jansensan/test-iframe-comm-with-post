@@ -11,14 +11,17 @@
 
   /* ngInject */
   function PostOfficeService($window, postOffice) {
+    console.log('--- icontent.services.PostOfficeService ---');
+
     // init post office
-    var postOfficeConfig = {
+    var parentWindow = $window.parent;
+    console.log('parentWindow: ', parentWindow);
+    postOffice.init({
       name: 'icontentPostOffice',
       currentWindow: $window,
-      recipientWindow: $window.parent,
+      recipientWindow: parentWindow,
       recipientDomain: 'http://container.iframe-test.com:3200'
-    };
-    postOffice.init(postOfficeConfig);
+    });
 
     // public api
     var _service = {};
@@ -27,7 +30,7 @@
     // private methods
     function test() {
       console.log('--- icontent.services.PostOfficeService:test ---');
-      postOffice.send('hello post office');
+      postOffice.send('hello parent');
     }
 
     return _service;
@@ -50,7 +53,7 @@
     return {
       restrict: 'E',
       controller: 'PostOfficeTesterController',
-      controllerAs: 'vm',
+      controllerAs: 'postOfficeTesterVM',
       bindToController: true,
       templateUrl: 'static/templates/post-office-tester-template.html'
     };
@@ -60,8 +63,8 @@
   /* ngInject */
   function PostOfficeTesterController(postOfficeService) {
     // public api
-    var vm = this;
-    vm.test = postOfficeService.test;
+    var postOfficeTesterVM = this;
+    postOfficeTesterVM.test = postOfficeService.test;
   }
   
 })();
@@ -78,7 +81,7 @@
     return {
       restrict: 'E',
       controller: 'StateToggleController',
-      controllerAs: 'vm',
+      controllerAs: 'stateToggleVM',
       bindToController: true,
       templateUrl: 'static/templates/state-toggle-template.html'
     };
@@ -93,12 +96,12 @@
     var _state = _states.ON;
 
     // public api
-    var vm = this;
-    vm.turnOn = turnOn;
-    vm.turnOff = turnOff;
-    vm.getCurrentState = getCurrentState;
-    vm.isOn = isOn;
-    vm.isOff = isOff;
+    var stateToggleVM = this;
+    stateToggleVM.turnOn = turnOn;
+    stateToggleVM.turnOff = turnOff;
+    stateToggleVM.getCurrentState = getCurrentState;
+    stateToggleVM.isOn = isOn;
+    stateToggleVM.isOff = isOff;
 
     // private methods
     function turnOn() {
@@ -138,7 +141,7 @@
     return {
       restrict: 'E',
       controller: 'IFrameContentController',
-      controllerAs: 'vm',
+      controllerAs: 'iframeContentVM',
       bindToController: true,
       templateUrl: 'static/templates/iframe-content-template.html'
     };
@@ -146,7 +149,7 @@
 
 
   function IFrameContentController() {
-    var vm = this;
+    var iframeContentVM = this;
   }
   
 })();

@@ -11,14 +11,17 @@
 
   /* ngInject */
   function PostOfficeService($window, postOffice) {
+    console.log('--- icontent.services.PostOfficeService ---');
+
     // init post office
-    var postOfficeConfig = {
+    var parentWindow = $window.parent;
+    console.log('parentWindow: ', parentWindow);
+    postOffice.init({
       name: 'icontentPostOffice',
       currentWindow: $window,
-      recipientWindow: $window.parent,
+      recipientWindow: parentWindow,
       recipientDomain: 'http://container.iframe-test.com:3200'
-    };
-    postOffice.init(postOfficeConfig);
+    });
 
     // public api
     var _service = {};
@@ -27,7 +30,7 @@
     // private methods
     function test() {
       console.log('--- icontent.services.PostOfficeService:test ---');
-      postOffice.send('hello post office');
+      postOffice.send('hello parent');
     }
 
     return _service;

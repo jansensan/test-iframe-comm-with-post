@@ -7,46 +7,6 @@
     .factory('postOffice', PostOffice);
 
 
-  function PostOfficeProvider() {
-    // variables
-    var _currentWindow = null,
-        _recipientWindow = null,
-        _recipientDomain = '',
-        _name = '';
-
-    // public api
-    var factory = {};
-    factory.$get = PostOffice;
-
-    // getters/setters
-    factory.name = function(value) {
-      if (!arguments.length) return _name;
-      _name = value;
-      return factory;
-    };
-    
-    factory.currentWindow = function(value) {
-      if (!arguments.length) return _currentWindow;
-      _currentWindow = value;
-      return factory;
-    };
-    
-    factory.recipientWindow = function(value) {
-      if (!arguments.length) return _recipientWindow;
-      _recipientWindow = value;
-      return factory;
-    };
-    
-    factory.recipientDomain = function(value) {
-      if (!arguments.length) return _recipientDomain;
-      _recipientDomain = value;
-      return factory;
-    };
-
-    return factory;
-  }
-
-
   /* ngInject */
   function PostOffice($q) {
     // vars
@@ -109,15 +69,15 @@
     function enable() {
       // check for missing things
       if(!_currentWindow) {
-        throw new Error(getMissingParamErrorMessage('currentWindow'));
+        throw new Error(getMissingParamErrorMessage('_currentWindow'));
       }
 
       if(!_recipientWindow) {
-        throw new Error(getMissingParamErrorMessage('recipientWindow'));
+        throw new Error(getMissingParamErrorMessage('_recipientWindow'));
       }
 
       if(!_recipientDomain) {
-        throw new Error(getMissingParamErrorMessage('domain'));
+        throw new Error(getMissingParamErrorMessage('_recipientDomain'));
       }
 
       // add event listeners

@@ -14,7 +14,7 @@
     return {
       restrict: 'E',
       controller: 'PostOfficeTesterController',
-      controllerAs: 'vm',
+      controllerAs: 'postOfficeTesterVM',
       bindToController: true,
       templateUrl: 'static/templates/post-office-tester-template.html'
     };
@@ -23,9 +23,11 @@
 
   /* ngInject */
   function PostOfficeTesterController($window, postOfficeService) {
+    console.log('--- PostOfficeTesterController ---');
+
     // public api
-    var vm = this;
-    vm.test = postOfficeService.test;
+    var postOfficeTesterVM = this;
+    postOfficeTesterVM.test = postOfficeService.test;
   }
   
 })();

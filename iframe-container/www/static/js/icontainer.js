@@ -11,14 +11,17 @@
 
   /* ngInject */
   function PostOfficeService($window, postOffice) {
+    console.log('--- icontainer.services.PostOfficeService ---');
+
     // init post office
-    var postOfficeConfig = {
+    var childWindow = document.getElementById('iframeContent').contentWindow
+    console.log('childWindow: ', childWindow);
+    postOffice.init({
       name: 'icontainerPostOffice',
       currentWindow: $window,
-      recipientWindow: document.getElementById('iframeContent').contentWindow,
+      recipientWindow: childWindow,
       recipientDomain: 'http://content.iframe-test.com:1600'
-    };
-    postOffice.init(postOfficeConfig);
+    });
 
     // public api
     var _service = {};
@@ -50,7 +53,7 @@
     return {
       restrict: 'E',
       controller: 'PostOfficeTesterController',
-      controllerAs: 'vm',
+      controllerAs: 'postOfficeTesterVM',
       bindToController: true,
       templateUrl: 'static/templates/post-office-tester-template.html'
     };
@@ -59,9 +62,11 @@
 
   /* ngInject */
   function PostOfficeTesterController($window, postOfficeService) {
+    console.log('--- PostOfficeTesterController ---');
+
     // public api
-    var vm = this;
-    vm.test = postOfficeService.test;
+    var postOfficeTesterVM = this;
+    postOfficeTesterVM.test = postOfficeService.test;
   }
   
 })();
@@ -80,7 +85,7 @@
     return {
       restrict: 'E',
       controller: 'CounterDisplayController',
-      controllerAs: 'vm',
+      controllerAs: 'counterDisplayVM',
       bindToController: true,
       templateUrl: 'static/templates/counter-display-template.html'
     };
@@ -92,10 +97,10 @@
     var _count = 0;
 
     // public api
-    var vm = this;
-    vm.getCount = getCount;
-    vm.increase = increase;
-    vm.decrease = decrease;
+    var counterDisplayVM = this;
+    counterDisplayVM.getCount = getCount;
+    counterDisplayVM.increase = increase;
+    counterDisplayVM.decrease = decrease;
 
     // private methods
     function getCount() {
