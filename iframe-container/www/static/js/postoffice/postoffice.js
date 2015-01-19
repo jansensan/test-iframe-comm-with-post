@@ -53,9 +53,9 @@
       }
 
       console.log('_name: ' + (_name));
-      console.log('_currentWindow: ', _currentWindow);
-      console.log('_recipientWindow: ', _recipientWindow);
       console.log('_recipientDomain: ' + (_recipientDomain));
+      console.log('_recipientWindow: ', _recipientWindow);
+      console.log('_currentWindow: ', _currentWindow);
 
       // enable
       enable();
@@ -124,10 +124,18 @@
 
     // event handlers
     function onMessageReceived(event) {
+      console.log('--- PostOffice:onMessageReceived ---');
+
+
       // ignore messages not sent from expected domain
+      console.log('_recipientDomain: ' + (_recipientDomain));
+      console.log('event.origin: ' + (event.origin));
+      console.log('event.origin ?= _recipientDomain: ' + (event.origin === _recipientDomain));
       if(event.origin !== _recipientDomain) {
         return;
       }
+
+      console.log('event.data: ' + (event.data));
 
       _deferred.resolve();
     }

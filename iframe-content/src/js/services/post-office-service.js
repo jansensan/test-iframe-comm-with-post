@@ -11,15 +11,11 @@
 
   /* ngInject */
   function PostOfficeService($window, postOffice) {
-    console.log('--- icontent.services.PostOfficeService ---');
-
     // init post office
-    var parentWindow = $window.parent;
-    console.log('parentWindow: ', parentWindow);
     postOffice.init({
       name: 'icontentPostOffice',
       currentWindow: $window,
-      recipientWindow: parentWindow,
+      recipientWindow: $window.parent,
       recipientDomain: 'http://container.iframe-test.com:3200'
     });
 
