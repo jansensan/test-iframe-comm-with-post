@@ -90,18 +90,25 @@
         _recipientWindow.postMessage(message, _recipientDomain);
 
       } else {
-        throw new Error('Error at PostOffice:send. The recipient window is potentially undefined.');
+        throw new Error('Error at PostOffice:send: The recipient window is potentially undefined.');
       }
     }
 
     function dispatchMessageSent() {
-      // var event = new Event(PostOfficeEvents.MESSAGE_SENT);
-      // $rootScope.$broadcast(event);
+      $rootScope.$broadcast(PostOfficeEvents.MESSAGE_SENT);
+    }
+
+    function confirmMessageReceptionToSource(source) {
+      // FIXME: figure out this error: "Uncaught SyntaxError: Failed to execute 'postMessage' on 'Window': Invalid target origin '' in a call to 'postMessage'."
+      // if(source && source.postMessage) {
+      //   source.postMessage(PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED);
+      // } else {
+      //   console.warn('Issue at PostOffice:confirmMessageReceptionToSource: It was impossible to confirm message reception to source window.');
+      // }
     }
 
     function dispatchRecipientReceptionConfirmation() {
-      // var event = new Event(PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED);
-      // $rootScope.$broadcast(event);
+      $rootScope.$broadcast(PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED);
     }
 
     function dispatchMessageReceived(message) {
@@ -133,18 +140,16 @@
         return;
       }
 
-      // TODO: handle the additional dispatches
-      
       // exit quickly if message is simply to confirm reception of send
       // this dispatches to whoever listens to the events the service dispatches
-      // if(event.data === PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED) {
-      //   dispatchRecipientReceptionConfirmation();
-      //   return;
-      // }
+      if(event.data === PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED) {
+        dispatchRecipientReceptionConfirmation();
+        return;
+      }
 
       // inform source that message is received
       // this is internal, returns a message to the sender directly
-      // event.source.postMessage(PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED);
+      confirmMessageReceptionToSource(event.source);
 
       // dispatch reception event
       dispatchMessageReceived(event.data);
