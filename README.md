@@ -89,24 +89,12 @@ This will open a browser page with the project.
 
 ### The recipient `window` of both the container and the content are empty
 
-Each of these projects need to target a `window` object to be able to call `window.postMessage`.
+The `postOffice` service is intended as a proof of concept for another project. I started adding additional event handling to confirm message sent, message received.
 
-In the case of the container, running this code
-
-```
-var childWindow = document.getElementById('iframeContent').contentWindow
-console.log('childWindow: ', childWindow);
-```
-
-does not result in an error, but the `window` object returned has no property whatsoever.
-
-Similarly, doing this in the `<iframe>` content
+However, an issue occurs when using `event.source.postMessage()` as explained on [MDN's documentation](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage):
 
 ```
-var parentWindow = $window.parent;
-console.log('parentWindow: ', parentWindow);
+Uncaught SyntaxError: Failed to execute 'postMessage' on 'Window': Invalid target origin '' in a call to 'postMessage'.
 ```
 
-does the same as explained concerning the container.
-
-In both cases, calling the `postMessage()` function returns no error, but actually fails.
+Since this is mostly a proof of concept project and that adding such event handling is added sugar, I may only fix this later in the actual implementation of the project.
