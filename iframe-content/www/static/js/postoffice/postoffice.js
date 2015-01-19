@@ -4,33 +4,38 @@
   
   angular
     .module('PostOffice', [])
+    .constant('PostOfficeEvents', getPostOfficeEvents())
     .factory('postOffice', PostOffice);
 
 
+  function getPostOfficeEvents() {
+    return {
+      MESSAGE_SENT: 'PostOffice:MESSAGE_SENT',
+      RECIPIENT_CONFIRMATION_CONFIRMED: 'PostOffice:RECIPIENT_CONFIRMATION_CONFIRMED',
+      MESSAGE_RECEIVED: 'PostOffice:MESSAGE_RECEIVED'
+    };
+  }
+
+
   /* ngInject */
-  function PostOffice($q) {
+  function PostOffice($rootScope, PostOfficeEvents) {
     // vars
     var _name = '',
         _currentWindow = null,
         _recipientWindow = null,
-        _recipientDomain = '',
-        _deferred = $q.defer(),
-        _hasPromiseResolved = false;
+        _recipientDomain = '';
 
     // public api
     var _service = {};
-    _service.init = init;
-    _service.disable = disable;
-    _service.enable = enable;
-    _service.getName = getName;
-    _service.getPromise = getPromise;
-    _service.send = send;
+        _service.init = init;
+        _service.disable = disable;
+        _service.enable = enable;
+        _service.send = send;
+        _service.getName = getName;
 
 
     // private methods
     function init(config) {
-      console.log('--- PostOffice:init ---');
-
       // exit quickly if no config is provided
       if(!config) {
         throw new Error('No config object was provided to initialize the PostOffice.');
@@ -52,18 +57,8 @@
         }
       }
 
-      console.log('_name: ' + (_name));
-      console.log('_recipientDomain: ' + (_recipientDomain));
-      console.log('_recipientWindow: ', _recipientWindow);
-      console.log('_currentWindow: ', _currentWindow);
-
       // enable
       enable();
-    }
-
-    function resetDeferred() {
-      _hasPromiseResolved = false;
-      _deferred = $q.defer();
     }
 
     function enable() {
@@ -90,12 +85,8 @@
     }
 
     function send(message) {
-      console.log('--- PostOffice:send ---');
-      console.log('message: ', message);
-      console.log('_recipientDomain: ', _recipientDomain);
-      console.log('_recipientWindow: ', _recipientWindow);
-
       if(_recipientWindow) {
+        dispatchMessageSent();
         _recipientWindow.postMessage(message, _recipientDomain);
 
       } else {
@@ -103,12 +94,25 @@
       }
     }
 
-    function getName() {
-      return _name;
+    function dispatchMessageSent() {
+      // var event = new Event(PostOfficeEvents.MESSAGE_SENT);
+      // $rootScope.$broadcast(event);
     }
 
-    function getPromise() {
-      return _deferred.promise;
+    function dispatchRecipientReceptionConfirmation() {
+      // var event = new Event(PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED);
+      // $rootScope.$broadcast(event);
+    }
+
+    function dispatchMessageReceived(message) {
+      $rootScope.$broadcast(
+        PostOfficeEvents.MESSAGE_RECEIVED,
+        {'message': message}
+      );
+    }
+
+    function getName() {
+      return _name;
     }
 
     function getMissingParamErrorMessage(paramName) {
@@ -124,20 +128,26 @@
 
     // event handlers
     function onMessageReceived(event) {
-      console.log('--- PostOffice:onMessageReceived ---');
-
-
       // ignore messages not sent from expected domain
-      console.log('_recipientDomain: ' + (_recipientDomain));
-      console.log('event.origin: ' + (event.origin));
-      console.log('event.origin ?= _recipientDomain: ' + (event.origin === _recipientDomain));
       if(event.origin !== _recipientDomain) {
         return;
       }
 
-      console.log('event.data: ' + (event.data));
+      // TODO: handle the additional dispatches
+      
+      // exit quickly if message is simply to confirm reception of send
+      // this dispatches to whoever listens to the events the service dispatches
+      // if(event.data === PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED) {
+      //   dispatchRecipientReceptionConfirmation();
+      //   return;
+      // }
 
-      _deferred.resolve();
+      // inform source that message is received
+      // this is internal, returns a message to the sender directly
+      // event.source.postMessage(PostOfficeEvents.RECIPIENT_CONFIRMATION_CONFIRMED);
+
+      // dispatch reception event
+      dispatchMessageReceived(event.data);
     }
 
 

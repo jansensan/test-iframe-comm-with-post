@@ -23,8 +23,6 @@
 
   /* ngInject */
   function PostOfficeTesterController($window, postOfficeService) {
-    console.log('--- PostOfficeTesterController ---');
-
     // public api
     var postOfficeTesterVM = this;
     postOfficeTesterVM.test = postOfficeService.test;

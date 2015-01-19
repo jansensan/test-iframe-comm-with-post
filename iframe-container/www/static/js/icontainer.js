@@ -10,7 +10,7 @@
 
 
   /* ngInject */
-  function PostOfficeService($window, postOffice) {
+  function PostOfficeService($rootScope, $window, postOffice, PostOfficeEvents) {
     // init post office
     postOffice.init({
       name: 'icontainerPostOffice',
@@ -18,6 +18,7 @@
       recipientWindow: document.getElementById('iframeContent').contentWindow,
       recipientDomain: 'http://content.iframe-test.com:1600'
     });
+    $rootScope.$on(PostOfficeEvents.MESSAGE_RECEIVED, onMessageReceived);
 
     // public api
     var _service = {};
@@ -25,8 +26,13 @@
 
     // private methods
     function test() {
-      console.log('--- icontainer.services.PostOfficeService:test ---');
       postOffice.send('hello child');
+    }
+
+    // event handlers
+    function onMessageReceived(event, data) {
+      console.log('--- icontainer.services.PostOfficeService:onMessageReceived ---');
+      console.log('message: ', data);
     }
 
     return _service;
@@ -58,8 +64,6 @@
 
   /* ngInject */
   function PostOfficeTesterController($window, postOfficeService) {
-    console.log('--- PostOfficeTesterController ---');
-
     // public api
     var postOfficeTesterVM = this;
     postOfficeTesterVM.test = postOfficeService.test;

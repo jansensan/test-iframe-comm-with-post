@@ -10,7 +10,7 @@
 
 
   /* ngInject */
-  function PostOfficeService($window, postOffice) {
+  function PostOfficeService($rootScope, $window, postOffice, PostOfficeEvents) {
     // init post office
     postOffice.init({
       name: 'icontentPostOffice',
@@ -18,6 +18,7 @@
       recipientWindow: $window.parent,
       recipientDomain: 'http://container.iframe-test.com:3200'
     });
+    $rootScope.$on(PostOfficeEvents.MESSAGE_RECEIVED, onMessageReceived);
 
     // public api
     var _service = {};
@@ -25,8 +26,13 @@
 
     // private methods
     function test() {
-      console.log('--- icontent.services.PostOfficeService:test ---');
       postOffice.send('hello parent');
+    }
+
+    // event handlers
+    function onMessageReceived(event, data) {
+      console.log('--- icontent.services.PostOfficeService:onMessageReceived ---');
+      console.log('message: ', data);
     }
 
     return _service;
